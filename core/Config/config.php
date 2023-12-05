@@ -24,21 +24,20 @@ define("PASSWORD",''); //Database Password
 define("TOKEN_PERIOD",20); //Expired session in minutes
 
 //SMTP mail credentials and information
-define("MAIL_HOST",'mail.crickbd.live'); //Server Or gmail SMTP HOST
+define("MAIL_HOST",'abs framework'); //Server Or gmail SMTP HOST
 define("MAIL_PORT",587); //Server SMTP Port
-define("MAIL_USERNAME",'noreply@crickbd.live'); //User Mail Name
-define("MAIL_SUPPORT",'support@crickbd.live'); //Contact Mail Name
-define("MAIL_PASSWORD",'j#@9Ta#sqv?mL~^'); //Mail Password
-define("MAIL_WEBSITE",'crickbd.live'); //Website Name
-define("MAIL_TEAM","CRICKBD"); //Support Team Name
+define("MAIL_USERNAME",'noreply@abdursoft.com'); //User Mail Name
+define("MAIL_SUPPORT",'support@abdursoft.com'); //Contact Mail Name
+define("MAIL_PASSWORD",'ja#L~^'); //Mail Password
+define("MAIL_WEBSITE",'abdursoft.com'); //Website Name
+define("MAIL_TEAM","abdursoft"); //Support Team Name
 define("MAIL_CONTACT","+8801892311511"); //Contact Phone Number
 define("MAIL_OWNER_ADSRESS","Mithapukur, Rangpur,BANGLADESH"); //Office Address
 
 //Bkash credentials
-define('BKASH_APP_KEY','4f6o0cjiki2rfm34kfdadl1eqq'); //Bkash App Key
-define("BKASH_APP_SECRET",'2is7hdktrekvrbljjh44ll3d9l1dtjo4pasmjvs5vl5qr3fug4b'); //Bkash App Secret
+define('BKASH_APP_KEY','4f6o0'); //Bkash App Key
+define("BKASH_APP_SECRET",'2is7hdktrg4b'); //Bkash App Secret
 define("BKASH_PROXY","TokenizedCheckout"); //Bkash Proxy
 define("BKASH_USERNAME",'sandboxTokenizedUser02'); //Bkash User Name
-define("BKASH_PASSWORD",'sandboxTokenizedUser02@12345'); //Bkash Password
-define("BKASH_IFRAME",true); //True For Iframe and false For Tokenized 
+define("BKASH_PASSWORD",'sandboxTo@12345'); //Bkash Password
 define("BKASH_SANDBOX",true); //True for Sandbox and false For Production
