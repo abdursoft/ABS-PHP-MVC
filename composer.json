@@ -1,0 +1,20 @@
+{
+    "name": "abs/php-router",
+    "description": "ABS php Router",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Abdur Rahim"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\" : "app/",
+            "System\\" : "System/",
+            "DB\\" : "database/",
+            "PLUGIN\\" : "plugins/"
+        }
+    },
+    "minimum-stability": "dev"
+}
