@@ -1,12 +1,9 @@
 <?php
-
-//set and truck the errors
-ini_set('display_errors',1);
-
 use App\Controller\App;
 use System\Route\Route;
 require 'vendor/autoload.php';
 require 'core/Config/config.php';
+ini_set('display_errors',1);
 
 $route = new Route();
 
