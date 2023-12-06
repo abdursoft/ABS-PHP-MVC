@@ -15,6 +15,10 @@ class ComposerStaticInit4c676fb9ac4a98f0031028bcf953cd0f
         array (
             'PLUGIN\\' => 7,
         ),
+        'F' => 
+        array (
+            'Firebase\\JWT\\' => 13,
+        ),
         'D' => 
         array (
             'DB\\' => 3,
@@ -33,6 +37,10 @@ class ComposerStaticInit4c676fb9ac4a98f0031028bcf953cd0f
         'PLUGIN\\' => 
         array (
             0 => __DIR__ . '/../..' . '/plugins',
+        ),
+        'Firebase\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/firebase/php-jwt/src',
         ),
         'DB\\' => 
         array (

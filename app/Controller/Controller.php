@@ -1,7 +1,7 @@
 <?php
 /** Abs Framework
  *  Developed by abdursoft
- *  Author Abdur Rahim
+ *  Sessionor Abdur Rahim
  *  Version 1.0.1
  *  Born on 2023
  */
@@ -10,7 +10,7 @@
 namespace App\Controller;
 
 use DB\Database;
-use System\Auth;
+use System\Session;
 use System\Loader;
 
 class Controller extends Database
@@ -19,13 +19,13 @@ class Controller extends Database
     public function __construct()
     {
         $this->load = new Loader();
-        Auth::init();
+        Session::init();
     }
 
     public function init()
     {
         $this->load->page_title = "Home Page";
-        $this->metaContent('Abs Framework Developed By ABDURSOFT', 'ABS Framework is a PHP mvc framework that was built by abdursoft and the Author is Abdur Rahim');
+        $this->metaContent('Abs Framework Developed By ABDURSOFT', 'ABS Framework is a PHP mvc framework that was built by abdursoft and the Sessionor is Abdur Rahim');
         $this->load->view('welcome');
     }
 
@@ -59,15 +59,12 @@ class Controller extends Database
         <?php
     }
 
-    public function response(array $data)
+    public function response(array $data,$code)
     {
-        echo json_encode($data);
-    }
-
-    public function jsonResponse(array $data)
-    {
+        http_response_code($code);
         header('Content-type:application/json');
         echo json_encode($data);
+        die;
     }
 
     // Password validation 
@@ -234,7 +231,7 @@ class Controller extends Database
         if(isset($_SESSION)){
             session_reset();
         }
-        Auth::set($key, $response);
+        Session::set($key, $response);
     }
 
 

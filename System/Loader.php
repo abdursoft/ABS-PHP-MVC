@@ -49,11 +49,11 @@ class Loader
             extract($data);
         }
         
-        if(Auth::get('login') == true){
+        if(Session::get('login') == true){
             include 'inc/auth/header.php';
-        }elseif(Auth::get('admin') == true && $this->active_admin == true){
+        }elseif(Session::get('admin') == true && $this->active_admin == true){
             include 'inc/admin/header.php';
-        }elseif(Auth::get('publisher') == true){
+        }elseif(Session::get('publisher') == true){
             include 'inc/publisher/header.php';
         }else{
             include 'inc/header.php';
@@ -69,11 +69,11 @@ class Loader
             }
         }
         
-        if(Auth::get('login') == true){
+        if(Session::get('login') == true){
             include 'inc/auth/footer.php';
-        }elseif(Auth::get('admin') == true && $this->active_admin == true){
+        }elseif(Session::get('admin') == true && $this->active_admin == true){
             include 'inc/admin/footer.php';
-        }elseif(Auth::get('publisher') == true){
+        }elseif(Session::get('publisher') == true){
             include 'inc/publisher/footer.php';
         }else{
             include 'inc/footer.php';

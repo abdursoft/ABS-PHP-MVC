@@ -1,4 +1,5 @@
 <?php
+
 /** Abs Framework
  *  Developed by abdursoft
  *  Author Abdur Rahim
@@ -6,81 +7,120 @@
  *  Born on 2023
  */
 
- 
 namespace System;
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+include "vendor/autoload.php";
+
+
 class Auth
 {
-  public static $time;
+    public static $time;
 
-  public static function init()
-  {
-    if(!isset($_SESSION)){
-      session_start();
+    public static function jwtAUTH($data, $audience)
+    {
+        self::$time = time();
+        $payload = [
+            "iss"   => $_SERVER['HTTP_HOST'],
+            'iat'   => self::$time,
+            'nbf'   => self::$time + JWT_INTERVAL,
+            'exp'   => self::$time + JWT_EXPAIR,
+            'aud'   => $audience,
+            'data'  => $data
+        ];
+
+        $token = JWT::encode($payload, JWT_SECRET, JWT_ALG);
+        return $token;
     }
-  }
 
-  public static function set($key, $value)
-  { 
-    self::init();
-    $_SESSION[$key] = $value;
-  }
-
-  public static function get($key)
-  {
-    if (isset($_SESSION[$key])) {
-      return $_SESSION[$key];
-    } else {
-      return false;
+    public static function jwtDecode($token)
+    {
+        JWT::$leeway = 50;
+        $decode = JWT::decode($token, new Key(JWT_SECRET, JWT_ALG));
+        return $decode;
     }
-  }
 
-  public static function active($route){
-    if(self::get('route') == $route){
-      echo 'nav-active';
-    }else{
-      echo '';
+    public static function found($token)
+    {
+        try {
+            $data = self::jwtDecode($token);
+            return $data;
+        } catch (\Throwable $th) {
+            return $th->getMessage();
+        }
     }
-  }
 
-  public static function token($key){
-    if (isset($_SESSION[$key])) {
-      echo  $_SESSION[$key];
-    } else {
-      echo null;
+    public static function getHeader()
+    {
+        $header = getallheaders();
+        if ($header['Authorization'] != '') {
+            $token = self::found(self::tokenSanitizer($header['Authorization']));
+            if (is_array($token) || is_object($token)) {
+                return $token;
+            } else {
+                if($token == 'Expired token'){
+                    try {
+                        $tok = self::refreshToken(self::tokenSanitizer($header['Authorization']));
+                        print_r($tok);
+                    } catch (\Throwable $th) {
+                        echo self::response([
+                            'status' => 0,
+                            'message' => $th->getMessage(),
+                        ], 500);
+                    }
+                }else{
+                    echo self::response([
+                        'status' => 0,
+                        'message' => $token,
+                    ], 500);
+                }
+            }
+        } else {
+            echo self::response([
+                'status' => 0,
+                'message' => 'Unauthorized Token!'
+            ], 500);
+        }
     }
-  }
 
-  public static function chSession($token,$redirect)
-  {
-    self::init();
-    if (self::get($token) == false) {
-      self::destroy();
-      self::redirect($redirect);
+    public static function tokenSanitizer($token)
+    {
+        return trim(str_replace('Bearer', '', $token));
     }
-  }
 
-  public static function refreshAuth()
-  {
-    if (time() > strtotime((TOKEN_PERIOD * 60) + self::$time)) {
-      self::destroy();
-      self::redirect('Login');
-    } else {
-      self::$time = time() + (TOKEN_PERIOD * 60);
+    public static function response(array $data, $code)
+    {
+        http_response_code($code);
+        header('Content-type:application/json');
+        echo json_encode($data);
+        die;
     }
-  }
 
-  public static function redirect($path){
-    header("Location:".$path);
-  }
-
-  public static function unset($key){
-    unset($_SESSION[$key]);
-  }
-
-  public static function destroy()
-  {
-    session_unset();
-    session_destroy();
-  }
+    public static function refreshToken($token)
+    {
+        $header = getallheaders();
+        if ($header['Authorization'] != '') {
+            try {
+                $decoded = JWT::decode(self::tokenSanitizer($token), new Key(JWT_SECRET, JWT_ALG));
+            } catch (\Firebase\JWT\ExpiredException $e) {
+                JWT::$leeway = 720;
+                $decoded = (array) JWT::decode(self::tokenSanitizer($token), new Key(JWT_SECRET, JWT_ALG));
+                $decoded['iat'] = time();
+                $decoded['exp'] = time() + JWT_EXPAIR;
+                return JWT::encode($decoded,JWT_SECRET,JWT_ALG);
+            } catch (\Exception $e) {
+                echo self::response([
+                    'status' => 0,
+                    'message' => $e->getMessage(),
+                ], 500);
+            }
+        }else{
+            echo self::response([
+                'status' => 0,
+                'message' => "Unauthorized Token or Not Found",
+            ], 500);
+        }
+    }
 }
-?>

@@ -8,10 +8,11 @@
 
 //  localization 
 define("LANGUAGE",'bn');
+define('MOOD','api');
 
 //Set base url
-define("BASE_URL",'http://localhost/collage/'); //set root directory/domain
-define("SITE_TITLE",'MIUI23'); //site name or title
+define("BASE_URL",'http://localhost/PHP-ABS-FRAMEWORK/ABS-PHP-MVC/'); //set root directory/domain
+define("SITE_TITLE",'ABS MVC FRAMEWORK'); //site name or title
 define("FAV_ICON",BASE_URL."assets/images/premium.png"); //site name or title
 
 //Database credentials
@@ -41,3 +42,9 @@ define("BKASH_PROXY","TokenizedCheckout"); //Bkash Proxy
 define("BKASH_USERNAME",'sandboxTokenizedUser02'); //Bkash User Name
 define("BKASH_PASSWORD",'sandboxTo@12345'); //Bkash Password
 define("BKASH_SANDBOX",true); //True for Sandbox and false For Production
+
+// jWT configuration 
+define('JWT_ALG','HS256');
+define('JWT_SECRET','ronyMe_2k23');
+define('JWT_INTERVAL',10);
+define('JWT_EXPAIR',3600);
