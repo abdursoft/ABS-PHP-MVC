@@ -8,6 +8,8 @@
 
 //  localization 
 define("LANGUAGE",'bn');
+
+// application mood 
 define('MOOD','api');
 
 //Set base url

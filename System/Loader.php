@@ -117,7 +117,11 @@ class Loader
         }
 
     public function notFound(){
-        include 'public/view/notfound/index.php';
+        include 'public/view/common/notfound.php';
+    }
+
+    public function unAuthorized(){
+        include 'public/view/common/unauthorized.php';
     }
 }
 

@@ -12,6 +12,7 @@ namespace App\Controller;
 
 use Exception;
 use System\Auth;
+use System\Session;
 
 class User extends Controller
 {
@@ -44,6 +45,7 @@ class User extends Controller
     {
         if (!empty($param)) {
             $token = Auth::jwtAUTH($param, 'users');
+            Session::set('jwt_token',$token);
             echo $this->response([
                 'status' => 1,
                 'message' => 'Login successful',

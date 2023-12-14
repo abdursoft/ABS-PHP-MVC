@@ -7,12 +7,11 @@
  *  Born on 2023
  */
 
-
 namespace System\Route;
 
 use System\Loader;
-use System\Session;
 
+session_start();
 class Route extends Loader
 {
     private array $handlers;
@@ -21,6 +20,8 @@ class Route extends Loader
     private const METHOD_PUT = 'PUT';
     private const METHOD_DELETE = 'DELETE';
     private $middleware = null;
+    private $isAuth = false;
+    private $isApi = false;
     private $param = [];
 
     public function __construct()
@@ -51,13 +52,43 @@ class Route extends Loader
     {
         $this->middleware = $middleware;
         $requestUri = parse_url($_SERVER['REQUEST_URI']);
-        $requestPath = $requestUri['path'];
-        if (!empty($routes) && Session::get($middleware)) {
-            for ($i = 0; $i < count($routes); $i++) {
-                if ($routes[$i][0] === $requestPath) {
-                    $this->addHandler($routes[$i]['1'], $routes[$i][0], $routes[$i][2]);
+        $requestPath = $requestUri['path'] != '/' ? rtrim($requestUri['path'], '/') : $requestUri['path'];
+        if (MOOD == 'web') {
+            if (isset($_SESSION[$middleware])) {
+                if (!empty($routes)) {
+                    foreach ($routes as $route) {
+                        if ($route[1] == $requestPath) {
+                            $this->addHandler($this->method_sanitizer($route['0']), $route[1], $route[2]);
+                        }
+                    }
+                }
+            } else {
+                $this->isAuth = true;
+            }
+        } else {
+            if (!empty($routes)) {
+                foreach ($routes as $route) {
+                    if ($route[1] == $requestPath) {
+                        $this->addHandler($this->method_sanitizer($route['0']), $route[1], $route[2]);
+                    }
                 }
             }
+        }
+    }
+
+    public function method_sanitizer($method)
+    {
+        switch ($method) {
+            case 'get':
+                return self::METHOD_GET;
+            case 'post':
+                return self::METHOD_POST;
+            case 'delete':
+                return self::METHOD_DELETE;
+            case 'put':
+                return self::METHOD_PUT;
+            default:
+                return self::METHOD_GET;
         }
     }
 
@@ -79,14 +110,14 @@ class Route extends Loader
         $method = $_SERVER['REQUEST_METHOD'];
         $callback = null;
 
-        foreach ($this->handlers as $handler) {
-            if ($handler['path'] === $requestPath && $method === $handler['method']) {
-                if ($handler['middleware'] != null) {
-                    if (isset($_SESSION[$handler['middleware']])) {
+        if (!empty($this->handlers)) {
+            foreach ($this->handlers as $handler) {
+                if ($handler['path'] === $requestPath && $method === $handler['method']) {
+                    if ($handler['middleware'] != null) {
+                        $callback = $handler['handler'];
+                    } else {
                         $callback = $handler['handler'];
                     }
-                } else {
-                    $callback = $handler['handler'];
                 }
             }
         }
@@ -103,7 +134,11 @@ class Route extends Loader
         }
 
         if (!$callback) {
-            $this->notFound();
+            if ($this->isAuth) {
+                $this->unAuthorized();
+            } else {
+                $this->notFound();
+            }
             return;
         }
 

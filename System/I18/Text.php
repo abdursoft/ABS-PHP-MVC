@@ -9,7 +9,7 @@
  
 namespace System\I18;
 
-use System\Auth;
+use System\Session;
 
 class Text{
 
@@ -18,7 +18,7 @@ class Text{
     }
 
     public static function show($key){
-        $language = Auth::get('lang') ?? LANGUAGE;
+        $language = Session::get('lang') ?? LANGUAGE;
         if(file_exists('system/I18/text/'.$language.'.php')){
             include 'system/I18/text/'.$language.'.php';
             return $_lang[$key];

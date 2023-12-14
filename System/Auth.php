@@ -55,7 +55,7 @@ class Auth
     public static function getHeader()
     {
         $header = getallheaders();
-        if ($header['Authorization'] != '') {
+        if (isset($header['Authorization'])) {
             $token = self::found(self::tokenSanitizer($header['Authorization']));
             if (is_array($token) || is_object($token)) {
                 return $token;

@@ -9,16 +9,17 @@
  namespace App\Controller;
 
 use System\Auth;
+use System\Session;
 
  class Profile extends Controller{
     public function __construct()
     {
         parent::__construct();
-        Auth::getHeader();
     }
 
     public function profile(){
         $this->load->page_title = "Profile page";
+        var_dump(Session::get('jwt_token'));
         echo "Welcome To Your Profile";
     }
  }
