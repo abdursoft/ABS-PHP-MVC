@@ -9,9 +9,9 @@
  
 namespace System\Plugins;
 
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
-include 'plugins/smtp/PHPMailerAutoload.php';
+include "vendor/autoload.php";
 
 class SMTP
 {

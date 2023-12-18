@@ -21,7 +21,7 @@ class Route extends Loader
     private const METHOD_DELETE = 'DELETE';
     private $middleware = null;
     private $isAuth = false;
-    private $isApi = false;
+    private $parameter = [];
     private $param = [];
 
     public function __construct()
@@ -29,9 +29,9 @@ class Route extends Loader
         parent::__construct();
     }
 
-    public function get(string $path, $handler): void
+    public function get(string $path, $handler, array $parameter = null): void
     {
-        $this->addHandler(self::METHOD_GET, $path, $handler);
+        $this->addHandler(self::METHOD_GET, $path, $handler, $parameter);
     }
     public function post(string $path, $handler): void
     {
@@ -76,6 +76,20 @@ class Route extends Loader
         }
     }
 
+    public function group(string $gorup_name, array $routes): void
+    {
+        $requestUri = parse_url($_SERVER['REQUEST_URI']);
+        $requestPath = $requestUri['path'] != '/' ? rtrim($requestUri['path'], '/') : $requestUri['path'];
+
+        if (!empty($routes)) {
+            foreach ($routes as $route) {
+                if ($gorup_name != '') {
+                    $this->addHandler($this->method_sanitizer($route['0']), '/'.trim($gorup_name,'/')."/".trim($route['1'],'/'), $route[2],$route[3] ?? null);
+                }
+            }
+        }
+    }
+
     public function method_sanitizer($method)
     {
         switch ($method) {
@@ -92,12 +106,13 @@ class Route extends Loader
         }
     }
 
-    private function addHandler(string $method, string $path, $handler): void
+    private function addHandler(string $method, string $path, $handler, array $parameter = null): void
     {
         $this->handlers[$method . $path] = [
             "path" => $path,
             "method" => $method,
             "handler" => $handler,
+            "parameter" => $parameter,
             "middleware" => $this->middleware
         ];
     }
@@ -112,11 +127,23 @@ class Route extends Loader
 
         if (!empty($this->handlers)) {
             foreach ($this->handlers as $handler) {
-                if ($handler['path'] === $requestPath && $method === $handler['method']) {
-                    if ($handler['middleware'] != null) {
+                if (!empty($handler['parameter'])) {
+                    $path = explode($handler['path'], $requestPath);
+                    if (isset($path[1])) {
+                        $param_get = trim($path[1], '/');
+                        $param_explode = explode('/', $param_get);
+                        for ($p = 0; $p < count($handler['parameter']); $p++) {
+                            $_GET[$handler['parameter'][$p]] = $param_explode[$p] ?? '';
+                        }
                         $callback = $handler['handler'];
-                    } else {
-                        $callback = $handler['handler'];
+                    }
+                } else {
+                    if ($handler['path'] === $requestPath && $method === $handler['method']) {
+                        if ($handler['middleware'] != null) {
+                            $callback = $handler['handler'];
+                        } else {
+                            $callback = $handler['handler'];
+                        }
                     }
                 }
             }

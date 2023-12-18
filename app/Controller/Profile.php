@@ -22,4 +22,12 @@ use System\Session;
         var_dump(Session::get('jwt_token'));
         echo "Welcome To Your Profile";
     }
+
+    public function forgot(){
+        echo "Password Forgot";
+    }
+
+    public function retrieve(){
+        echo "Password Retrieve";
+    }
  }

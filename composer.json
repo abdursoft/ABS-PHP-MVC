@@ -18,6 +18,9 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "firebase/php-jwt": "dev-main"
+        "firebase/php-jwt": "dev-main",
+        "aws/aws-sdk-php":  "^3.270",
+        "stripe/stripe-php": "^10.16",
+        "phpmailer/phpmailer": "^6.9.1"
     }
 }

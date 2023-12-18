@@ -18,6 +18,12 @@ class App extends Controller{
         $this->load->page_title = "Have a good journey with ABS framework";
         $this->load->view('welcome');
     }
+
+    public function test($param){
+        echo "<p>Get Value</p>";
+        print_r($param);
+    }
+
     public function init(){
         echo "HELLO APP";
     }

@@ -12,7 +12,7 @@ namespace System\Plugins;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 
-include 'plugins/aws/vendor/autoload.php';
+include "vendor/autoload.php";
 
 class S3
 {

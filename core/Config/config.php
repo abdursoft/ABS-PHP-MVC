@@ -10,10 +10,10 @@
 define("LANGUAGE",'bn');
 
 // application mood 
-define('MOOD','api');
+define('MOOD','web');
 
 //Set base url
-define("BASE_URL",'http://localhost/PHP-ABS-FRAMEWORK/ABS-PHP-MVC/'); //set root directory/domain
+define("BASE_URL",'http://localhost/github/PHP-ABS-FRAMEWORK/ABS-PHP-MVC/'); //set root directory/domain
 define("SITE_TITLE",'ABS MVC FRAMEWORK'); //site name or title
 define("FAV_ICON",BASE_URL."assets/images/premium.png"); //site name or title
 
