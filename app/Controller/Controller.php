@@ -9,11 +9,10 @@
  
 namespace App\Controller;
 
-use DB\Database;
 use System\Session;
 use System\Loader;
 
-class Controller extends Database
+class Controller
 {
     public $load;
     public function __construct()
@@ -349,7 +348,7 @@ class Controller extends Database
     public function metaContent($title = null, $description = null, $image = null, $keywords = null)
     {
         ob_start();
-        $keywords = 'crickbd cricket live score live cricket tv live scoreboard cricket t20 icc live world cup match t20 world cup 2022 score live cricket match live cricket match cricket cricket live cricket icc cricket live today live cricket scores today today cricket match  cricket scores today match live score icc cricket live match cricket live video live cricket icc cricket update live cricket match today score cricket live cricket t20 watch cricket online live cricket news latest cricket news watch cricket watch live cricket cricket online live cricket match live match cricket match cricket cricbuzz espnscricinfo';
+        $keywords = DEFAULT_KEYWORDS;
     ?>
         <meta name="description" content="<?= $description ?>" />
         <meta property="og:title" content="<?= $title ?>" />

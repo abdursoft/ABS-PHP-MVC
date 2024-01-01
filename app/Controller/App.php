@@ -9,12 +9,20 @@
  
 namespace App\Controller;
 
+use App\Model\User\Users;
+
 class App extends Controller{
     public function __construct()
     {
         parent::__construct();
     }
     public function index(){
+        $user = Users::create([
+            "name" => "Abdur Rahim",
+            "id" => 1,
+            "email" => "abrahimbadsha4@gmail.com"
+        ]);
+        var_dump($user);
         $this->load->page_title = "Have a good journey with ABS framework";
         $this->load->view('welcome');
     }
@@ -25,7 +33,15 @@ class App extends Controller{
     }
 
     public function init(){
-        echo "HELLO APP";
+        $user = Users::all('username',[
+            'limit' => 5,
+            'sort'  => ['name' => -1]
+        ]);
+
+        echo "<pre>";
+        foreach($user as $item){
+            print_r($item);
+        }
     }
 }
 ?>

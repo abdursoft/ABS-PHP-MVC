@@ -9,6 +9,7 @@
  
 namespace DB;
 
+use DB\Mysql\DB;
 use PDO;
 
 class Database extends DB

@@ -16,12 +16,36 @@ define('MOOD','web');
 define("BASE_URL",'http://localhost/github/PHP-ABS-FRAMEWORK/ABS-PHP-MVC/'); //set root directory/domain
 define("SITE_TITLE",'ABS MVC FRAMEWORK'); //site name or title
 define("FAV_ICON",BASE_URL."assets/images/premium.png"); //site name or title
+define('DEFAULT_KEYWORDS','crickbd cricket live score live cricket'); //Default keywords
 
-//Database credentials
+// Server TimeZone 
+define("DB_SERVER_TIMEZONE",'Asia/Dhaka');
+
+// Database server 
+define('DATABASE_SERVER','mongodb'); //supported database mysql,pgsql,mongodb
+
+//MYSQL database credentials
 define("DB",'abs_collage'); //Database Name
 define("HOST",'localhost'); //Database Host Name
 define("USER",'root'); //Database User Name
 define("PASSWORD",''); //Database Password
+
+//MYSQL database credentials
+define("PGDB",'abs_collage'); //Database Name
+define("PGHOST",'localhost'); //Database Host Name
+define("PGUSER",'root'); //Database User Name
+define("PGPASSWORD",''); //Database Password
+define("PGPORT",''); //Database Password
+
+// MONGODB database credentials 
+define("MONDB",'xvoox'); //Database Name
+define("MONHOST",'mongodb://localhost:27017'); //Database Host Name
+define("MONUSER",'root'); //Database User Name
+define("MONPASSWORD",''); //Database Password
+define("MONPORT",''); //Database Password
+define("MONSSL",''); //Database Password
+define("MONREPLICASET",''); //Database Password
+define("MONAUTHSOURCE",''); //Database Password
 
 //Authentication 
 define("TOKEN_PERIOD",20); //Expired session in minutes

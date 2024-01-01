@@ -21,6 +21,7 @@
         "firebase/php-jwt": "dev-main",
         "aws/aws-sdk-php":  "^3.270",
         "stripe/stripe-php": "^10.16",
-        "phpmailer/phpmailer": "^6.9.1"
+        "phpmailer/phpmailer": "^6.9.1",
+        "mongodb/mongodb": "v1.12.x-dev"
     }
 }

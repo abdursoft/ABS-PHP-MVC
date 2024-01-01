@@ -7,6 +7,8 @@ use App\Controller\User;
 
 $route = new Route();
 
+$route->get('/',App::class."::init");
+
 $route->get('/register', User::class."::register",[]);
 $route->post('/login', User::class."::login");
 

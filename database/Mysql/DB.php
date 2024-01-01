@@ -7,11 +7,11 @@
  */
 
  
-namespace DB;
+namespace DB\Mysql;
 
 use PDO;
 use PDOException;
-date_default_timezone_set("Asia/Dhaka");
+date_default_timezone_set(DB_SERVER_TIMEZONE);
 class DB{
     public static $db = array();
     public static function setDb(){
