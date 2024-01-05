@@ -1,4 +1,5 @@
 <?php
+
 /** Abs Framework
  *  Developed by abdursoft
  *  Author Abdur Rahim
@@ -6,7 +7,7 @@
  *  Born on 2023
  */
 
- 
+
 namespace DB\Mongodb;
 
 use PDO;
@@ -19,16 +20,9 @@ class MNDatabase extends Mongo
         //like as abdur.com@gmail.com
         $regexp = "/^[a-z0-9_-]+(\.[a-z0-9_-]+)*@[a-z0-9]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/";
         if (!preg_match($regexp, $email)) {
-            return "invalid";
-        }
-
-        $Sql = "SELECT * FROM " . $table . " WHERE $email_key = '$email' LIMIT 1";
-        $stmt = self::$db->prepare($Sql);
-        $stmt->execute();
-        if ($stmt->rowCount() > 0) {
-            return 'exist';
+            return false;
         } else {
-            return 'ok';
+            return true;
         }
     }
 
@@ -36,8 +30,8 @@ class MNDatabase extends Mongo
     // Data Insertation 
     public static function addData($table, $input)
     {
-        $insertOneResult = self::$db->$table->insertOne($input);        
-        return($insertOneResult->getInsertedId());
+        $insertOneResult = self::$db->$table->insertOne($input);
+        return ($insertOneResult->getInsertedId());
     }
 
     public static function getLastID($name)
@@ -50,7 +44,7 @@ class MNDatabase extends Mongo
     {
         return self::$db->$table->findOneAndUpdate([
             $key => $value
-        ],[
+        ], [
             '$set' => $input
         ]);
     }
@@ -110,18 +104,20 @@ class MNDatabase extends Mongo
     }
 
     // Data SelectingObject
-    public static function dataSelectObject($table,$condition,$option)
+    public static function dataSelectObject($table, $condition, $option)
     {
-        if(is_array($condition)){
+        if (is_array($condition)) {
             $result = self::$db->$table->find(
-                [],$option
+                [],
+                $option
             );
-        }else{
+        } else {
             $result = self::$db->$table->find(
-                [],$option
+                [],
+                $option
             );
         }
-        return($result);
+        return ($result);
     }
 
     // Data SelectingObject
@@ -133,12 +129,12 @@ class MNDatabase extends Mongo
     }
 
     // Single Data SelectingObject
-    public static function singleDataObject($table, $key_name, $key_value, $order_id=null)
+    public static function singleDataObject($table, $key_name, $key_value, $order_id = null)
     {
         $result = self::$db->$table->findOne([
             $key_name => $key_value
         ]);
-        return($result);
+        return ($result);
     }
 
     // Single Data SelectingObject
@@ -164,7 +160,7 @@ class MNDatabase extends Mongo
         return self::$db->exec($sql);
     }
 
-    public static function distinctTable($table, $key, $condition=null)
+    public static function distinctTable($table, $key, $condition = null)
     {
         return self::$db->$table->distinct($key);
     }
@@ -180,6 +176,18 @@ class MNDatabase extends Mongo
     {
         $sql = "SELECT a.*, b.channel_name,b.u_profile,b.u_token,c.* FROM $firstTable a  LEFT JOIN $secondTable b ON a.$key = b.$massKey LEFT JOIN $thirdtable c ON a.$key = c.$key";
         return self::selectAll($sql);
+    }
+
+    public static function leftJoin($table1, $table2, $key1, $key2, $token_key, $token)
+    {
+        $data = (array) self::$db->$table1->find([
+            $token_key => $token
+        ]);
+
+        $data1 = (array) self::$db->$table2->find([
+            $key2 => $data[$key1]
+        ]);
+        return (object) array_merge($data,$data1);
     }
 
     public static function innerJoinKeySignle($tables, $keys, $key_value)

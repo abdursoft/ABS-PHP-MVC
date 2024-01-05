@@ -17,7 +17,6 @@ class Postgress{
     public static function setDb(){
         {
             try {
-                $conn_string = "host=".PGHOST." port=".PGPORT." dbname=".PGDB." user=".PGUSER." password=".PGPASSWORD;
                 $dsn = "pgsql:host=".PGHOST.";port=".PGPORT.";dbname=".PGDB.";";
                 self::$db = new PDO( $dsn,  PGUSER,  PGPASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
             } catch (\Throwable $th) {

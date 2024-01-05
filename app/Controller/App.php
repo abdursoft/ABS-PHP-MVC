@@ -22,9 +22,9 @@ class App extends Controller{
             "id" => 1,
             "email" => "abrahimbadsha4@gmail.com"
         ]);
-        var_dump($user);
+        echo $user;
         $this->load->page_title = "Have a good journey with ABS framework";
-        $this->load->view('welcome');
+        // $this->load->view('welcome');
     }
 
     public function test($param){

@@ -180,6 +180,11 @@ class PGDatabase extends Postgress
         }
     }
 
+    public static function leftJoin($table1,$table2,$key1,$key2,$token){
+        $sql = "SELECT $table1.*, $table2.$key2 FROM $table1 INNER JOIN $table2 ON $table1.$key1 = $table2.$key2 WHERE $table1.token= '$token'";
+        return self::selectAll($sql);
+    }
+
     public static function innerJoinData($firstTable, $secondTable, $id, $key, $joinKey)
     {
         $sql = "SELECT $firstTable.*, $secondTable.u_secret FROM $firstTable INNER JOIN $secondTable ON $firstTable.user_id = $secondTable.u_token WHERE $firstTable.id= '3'";
