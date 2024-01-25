@@ -18,10 +18,12 @@
     },
     "minimum-stability": "dev",
     "require": {
+        "phpmailer/phpmailer": "^6.9.1",
+        "james-heinrich/getid3": "2.0.x-dev",
+        "mongodb/mongodb": "v1.12.x-dev",
+        "opencoconut/coconut": "dev-master",
         "firebase/php-jwt": "dev-main",
         "aws/aws-sdk-php":  "^3.270",
-        "stripe/stripe-php": "^10.16",
-        "phpmailer/phpmailer": "^6.9.1",
-        "mongodb/mongodb": "v1.12.x-dev"
+        "stripe/stripe-php": "^10.16"
     }
 }

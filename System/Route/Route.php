@@ -84,7 +84,13 @@ class Route extends Loader
         if (!empty($routes)) {
             foreach ($routes as $route) {
                 if ($gorup_name != '') {
-                    $this->addHandler($this->method_sanitizer($route['0']), '/'.trim($gorup_name,'/')."/".trim($route['1'],'/'), $route[2],$route[3] ?? null);
+                    if(!array_key_exists('extends',$route)){
+                        $this->addHandler($this->method_sanitizer($route['0']), '/'.trim($gorup_name,'/')."/".trim($route['1'],'/'), $route[2],$route[3] ?? null);
+                    }else{
+                        foreach($route['routes'] as $item){
+                            $this->addHandler($this->method_sanitizer($item['0']), '/'.trim($gorup_name.'/'.$route['slug'],'/')."/".trim($item['1'],'/'), $item[2],$item[3] ?? null);
+                        }
+                    }
                 }
             }
         }

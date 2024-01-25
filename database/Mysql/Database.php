@@ -7,7 +7,7 @@
  */
 
  
-namespace DB;
+namespace DB\Mysql;
 
 use DB\Mysql\DB;
 use PDO;

@@ -13,7 +13,6 @@ use DB\DBServer;
 
 class Idle extends DBServer
 {
-
     public static function all($condition,$limit=null){
         return self::$db::dataSelectObject(self::getTable(),$condition,$limit);
     }

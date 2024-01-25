@@ -46,9 +46,9 @@ class SMTP
             'allow_self_signed' => false
         ));
         if (!$mail->Send()) {
-            return "fail";
+            return false;
         } else {
-            return 'sent';
+            return true;
         }
     }
 }

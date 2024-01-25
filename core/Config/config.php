@@ -69,6 +69,33 @@ define("BKASH_USERNAME",'sandboxTokenizedUser02'); //Bkash User Name
 define("BKASH_PASSWORD",'sandboxTo@12345'); //Bkash Password
 define("BKASH_SANDBOX",true); //True for Sandbox and false For Production
 
+// AWS Bucket Credentials 
+define('AWS_KEY', 'AKIAWYXPPPGV7L6WRZXB');
+define('AWS_SECRET','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');
+define('AWS_BUCKET_INPUT','xvoox-upload');
+define('AWS_BUCKET_OUTPUT','xvoox-upload-store');
+define('AWS_REGION','us-east-1');
+define('AWS_HOST','https://d1qjop26vbxqxj.cloudfront.net');
+define('AWS_PIPELINE','1684746968672-c4z1yk');
+define('AWS_PRESET_ID','1684771800607-2ilzcg');
+
+// cloudflare credentials 
+define('CLOUD_REGION','Asia-Pacific');
+define('CLOUD_BUCKET','temp');
+define('CLOUD_IMAGE_BUCKET','xvoox-image');
+define('CLOUD_VIDEO_BUCKET','xvoox-video');
+define('CLOUD_TOKEN','wSmLFp37XP9Uct7dMb-WLuKA0BQ3HEA0SBDQmcD9');
+define('CLOUD_ACCESS_KEY','01a5c9ff20a9b97a807c3a1a017a730d');
+define('CLOUDE_SECRET_KEY','86317a46340d852721070f2187a9fdfb9aa8eee3b9f437fc83de10ce126611b2');
+define('CLOUD_ENDPOINT','https://722d8cdd43b34b655c9d3f0908aa47ad.r2.cloudflarestorage.com');
+define('CLOUD_BUCKET_HOST','https://pub-a9c1ee78e9ef47e2ad361b4bec7588e7.r2.dev/');
+define('CLOUD_TEMP_URL','https://temp.tvupload.tv/');
+define('CLOUD_IMAGE_URL','https://pub-2cddc97fe91d4891aefcf3394d39c71b.r2.dev/');
+define('CLOUD_VIDEO_URL','https://pub-cc5d6e0276124a75bd10755e715a65e5.r2.dev/');
+
+// coconut api
+define('COCONUT_API_KEY','k-32d7d82529a2ffca033b21dd61b3c44b');
+
 // jWT configuration 
 define('JWT_ALG','HS256');
 define('JWT_SECRET','ronyMe_2k23');
