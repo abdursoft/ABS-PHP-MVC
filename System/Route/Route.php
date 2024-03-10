@@ -48,7 +48,7 @@ class Route extends Loader
         $this->addHandler(self::METHOD_DELETE, $path, $handler);
     }
 
-    public function middleware(string $middleware, array $routes): void
+    public function middleware(string $middleware, array $routes): void // not completed yet
     {
         $this->middleware = $middleware;
         $requestUri = parse_url($_SERVER['REQUEST_URI']);

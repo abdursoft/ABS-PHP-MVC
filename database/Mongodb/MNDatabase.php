@@ -7,15 +7,14 @@
  *  Born on 2023
  */
 
-
 namespace DB\Mongodb;
 
 use PDO;
 
 class MNDatabase extends Mongo
 {
-    // Email Validation 
-    public static function email_verify($table, $email_key, $email)
+    // Email Validation
+    public static function email_verify($email)
     {
         //like as abdur.com@gmail.com
         $regexp = "/^[a-z0-9_-]+(\.[a-z0-9_-]+)*@[a-z0-9]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/";
@@ -26,8 +25,7 @@ class MNDatabase extends Mongo
         }
     }
 
-
-    // Data Insertation 
+    // Data Insertation
     public static function addData($table, $input)
     {
         $insertOneResult = self::$db->$table->insertOne($input);
@@ -43,28 +41,38 @@ class MNDatabase extends Mongo
     public static function updateData($table, $input, $key, $value)
     {
         return self::$db->$table->findOneAndUpdate([
-            $key => $value
+            $key => $value,
         ], [
-            '$set' => $input
+            '$set' => $input,
+        ]);
+    }
+
+    // Data updatation
+    public static function updateManyData($table, $input, $key, $value)
+    {
+        return self::$db->$table->updateMany([
+            $key => $value,
+        ], [
+            '$set' => $input,
+        ]);
+    }
+
+    public static function updateManyCondition($table, $input, $condition)
+    {
+        return self::$db->$table->updateMany($condition, [
+            '$set' => $input,
         ]);
     }
 
     // Data updatationCondition
-    public static function updateDataCondition($table, $input, $condition)
+    public static function updateDataCondition($table, $data, $condition)
     {
-        $data = NULL;
-        foreach ($input as $k => &$v) {
-            $data .= "$k=:$k,";
-        }
-        // return $data;
-        $data = rtrim($data, ',');
-        $sql = "";
-        $sql .= "UPDATE $table  SET $data WHERE $condition";
-        $stmt = self::$db->prepare($sql);
-        foreach ($input as $k => $v) {
-            $stmt->bindParam(":$k", $v);
-        }
-        return $stmt->execute();
+        return self::$db->$table->findOneAndUpdate(
+            $condition,
+            [
+                '$set' => $data,
+            ]
+        );
     }
 
     public static function select($sql)
@@ -96,19 +104,37 @@ class MNDatabase extends Mongo
 
     public static function selectById($table, $id)
     {
-        $sql = "SELECT * FROM $table WHERE id=:id";
+        $sql  = "SELECT * FROM $table WHERE id=:id";
         $stmt = self::$db->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
         return $stmt->fetchAll();
     }
 
+    public static function aggregate($table1, $table2, $primary_Key, $secondary_key, $lookup_as,$pipeline)
+    {
+        return self::$db->$table1->aggregate([
+            $pipeline,
+            [
+                '$lookup' => [
+                    'from'         => $table2,
+                    'localField'   => $secondary_key,
+                    'foreignField' => $primary_Key,
+                    'as'           => $lookup_as,
+                ]
+            ],
+            [
+                '$unwind' => "$$lookup_as",
+            ],
+        ]);
+    }
+
     // Data SelectingObject
-    public static function dataSelectObject($table, $condition, $option)
+    public static function dataSelectObject($table, $condition = null, array $option = [null])
     {
         if (is_array($condition)) {
             $result = self::$db->$table->find(
-                [],
+                $condition,
                 $option
             );
         } else {
@@ -123,46 +149,43 @@ class MNDatabase extends Mongo
     // Data SelectingObject
     public static function countRows($table, $condition)
     {
-        $sql = "";
-        $sql = "SELECT * FROM " . $table . " WHERE " . $condition;
-        return self::selectRow($sql);
+        $rows = self::$db->$table->count($condition);
+        return $rows;
     }
 
     // Single Data SelectingObject
     public static function singleDataObject($table, $key_name, $key_value, $order_id = null)
     {
         $result = self::$db->$table->findOne([
-            $key_name => $key_value
+            $key_name => $key_value,
         ]);
         return ($result);
     }
 
     // Single Data SelectingObject
-    public static function singleDataObjectCondition($table, $condition)
+    public static function singleDataObjectCondition($table, array $condition)
     {
-        $sql = "";
-        $sql = "SELECT * FROM $table WHERE " . $condition;
-        return self::select($sql);
+        $result = self::$db->$table->findOne($condition);
+        return ($result);
     }
 
-    // Data Deletion 
+    // Data Deletion
     public static function dataDelete($table, $del_key, $del_value)
     {
         return self::$db->$table->findOneAndDelete([
-            $del_key => $del_value
+            $del_key => $del_value,
         ]);
     }
 
-    // Data Deletion 
-    public static function dataDeleteCondition($table, $condition)
+    // Data Deletion
+    public static function dataDeleteCondition($table, array $condition)
     {
-        $sql = "DELETE FROM $table WHERE " . $condition;
-        return self::$db->exec($sql);
+        return self::$db->$table->findOneAndDelete($condition);
     }
 
     public static function distinctTable($table, $key, $condition = null)
     {
-        return self::$db->$table->distinct($key);
+        return self::$db->$table->distinct($key, $condition);
     }
 
     public static function innerJoinData($firstTable, $secondTable, $id, $key, $joinKey)
@@ -170,7 +193,6 @@ class MNDatabase extends Mongo
         $sql = "SELECT $firstTable.*, $secondTable.u_secret FROM $firstTable INNER JOIN $secondTable ON $firstTable.user_id = $secondTable.u_token WHERE $firstTable.id= '3'";
         return self::selectAll($sql);
     }
-
 
     public static function innerJoinKey($firstTable, $secondTable, $thirdtable, $key, $massKey)
     {
@@ -181,13 +203,13 @@ class MNDatabase extends Mongo
     public static function leftJoin($table1, $table2, $key1, $key2, $token_key, $token)
     {
         $data = (array) self::$db->$table1->find([
-            $token_key => $token
+            $token_key => $token,
         ]);
 
         $data1 = (array) self::$db->$table2->find([
-            $key2 => $data[$key1]
+            $key2 => $data[$key1],
         ]);
-        return (object) array_merge($data,$data1);
+        return (object) array_merge($data, $data1);
     }
 
     public static function innerJoinKeySignle($tables, $keys, $key_value)

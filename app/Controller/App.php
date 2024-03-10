@@ -9,6 +9,7 @@
  
 namespace App\Controller;
 
+use App\Model\User\Student;
 use App\Model\User\Users;
 
 class App extends Controller{
@@ -17,12 +18,13 @@ class App extends Controller{
         parent::__construct();
     }
     public function index(){
-        $user = Users::create([
-            "name" => "Abdur Rahim",
-            "id" => 1,
-            "email" => "abrahimbadsha4@gmail.com"
+        $data = Student::create([
+            'id' => 3,
+            'name' => "Abdur Rahim Rony",
+            'email' => "abdursoft@gmail.com",
+            'phone' => 012345433221
         ]);
-        echo $user;
+        print_r($data);
         $this->load->page_title = "Have a good journey with ABS framework";
         // $this->load->view('welcome');
     }

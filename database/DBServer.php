@@ -7,9 +7,10 @@
  */
 
 namespace DB;
+
 use DB\Mongodb\MNDatabase;
 use DB\Mysql\Database;
-use DB\Postgresql\PGDatabase; 
+use DB\Postgresql\PGDatabase;
 
 class DBServer{
     public static $db = array();
@@ -24,6 +25,7 @@ class DBServer{
                     break;
                 case 'mongodb':
                     self::$db = new MNDatabase;
+                    break;
             }
         }
     }

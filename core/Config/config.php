@@ -22,7 +22,7 @@ define('DEFAULT_KEYWORDS','crickbd cricket live score live cricket'); //Default 
 define("DB_SERVER_TIMEZONE",'Asia/Dhaka');
 
 // Database server 
-define('DATABASE_SERVER','mongodb'); //supported database mysql,pgsql,mongodb
+define('DATABASE_SERVER','mysql'); //supported database mysql,pgsql,mongodb,firebase
 
 //MYSQL database credentials
 define("DB",'abs_collage'); //Database Name

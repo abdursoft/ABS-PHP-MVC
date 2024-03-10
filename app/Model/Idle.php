@@ -50,17 +50,17 @@ class Idle extends DBServer
         return self::$db::dataDeleteCondition(self::getTable(), $condition);
     }
     
-    public static function distinct($key){
-        return self::$db::distinctTable(self::getTable(),$key);
+    public static function distinct($key,$condition=null){
+        return self::$db::distinctTable(self::getTable(),$key,$condition);
     }
 
-    public static function rows()
+    public static function rows($condition=null)
     {
-        return self::$db::selectRow(self::getTable());
+        return self::$db::countRows(self::getTable(),$condition);
     }
 
-    public static function getID(){
-        return self::$db::getLastID(self::getTable());
+    public static function getID($key){
+        return self::$db::getLastID(self::getTable(),$key);
     }
 
     public static function getTable()

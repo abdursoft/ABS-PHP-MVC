@@ -13,15 +13,17 @@ use DB\DBServer;
 
 class Users extends DBServer
 {
-
-    public static function all($condition,array $option = []){
-        return self::$db::dataSelectObject(self::getTable(),$condition,$option);
+    public static function all($key,$limit=null){
+        return self::$db::dataSelectObject(self::getTable(),$key,$limit);
     }
 
     public static function single($key,$value,$order_id){
         return self::$db::singleDataObject(self::getTable(),$key,$value,$order_id);
     }
 
+    public static function singleCondition($condition){
+        return self::$db::singleDataObjectCondition(self::getTable(),$condition);
+    }
 
     public static function create($data)
     {
@@ -33,23 +35,32 @@ class Users extends DBServer
         return self::$db::updateData(self::getTable(), $data, $key, $value);
     }
 
+    public static function updateCondition($data, $condition)
+    {
+        return self::$db::updateDataCondition(self::getTable(), $data, $condition);
+    }
 
     public static function delete($key, $value)
     {
         return self::$db::dataDelete(self::getTable(), $key, $value);
     }
 
-    public static function distinct($key){
-        return self::$db::distinctTable(self::getTable(),$key);
-    }
-
-    public static function rows()
+    public static function deleteCondition($condition)
     {
-        return self::$db::selectRow(self::getTable());
+        return self::$db::dataDeleteCondition(self::getTable(), $condition);
+    }
+    
+    public static function distinct($key,$condition=null){
+        return self::$db::distinctTable(self::getTable(),$key,$condition);
     }
 
-    public static function getID(){
-        return self::$db::getLastID(self::getTable());
+    public static function rows($condition=null)
+    {
+        return self::$db::countRows(self::getTable(),$condition);
+    }
+
+    public static function getID($key){
+        return self::$db::getLastID(self::getTable(),$key);
     }
 
     public static function getTable()
